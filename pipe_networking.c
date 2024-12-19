@@ -40,6 +40,9 @@ int server_handshake(int *to_client) {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int client_handshake(int *to_server) {
+  *to_server = getpid();
+  open(WKP, O_WRONLY);
+  write(WKP, to_server, sizeof(*to_server));
   int from_server;
   return from_server;
 }
