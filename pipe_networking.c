@@ -10,12 +10,13 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_setup() {
+  mkfifo(WKP, 0666);
   int from_client = 0;
   return from_client;
 }
 
 /*=========================
-  server_handshake 
+  server_handshake
   args: int * to_client
 
   Performs the server side pipe 3 way handshake.
@@ -56,5 +57,3 @@ int server_connect(int from_client) {
   int to_client  = 0;
   return to_client;
 }
-
-
