@@ -11,6 +11,10 @@
   =========================*/
 int server_setup() {
   mkfifo(WKP, 0666);
+  if(open(WKP, O_RDWR) == -1){
+    printf("Opening named pipe does not work.\n");
+    exit(1);
+  }
   int from_client = 0;
   return from_client;
 }
@@ -40,6 +44,10 @@ int server_handshake(int *to_client) {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int client_handshake(int *to_server) {
+  char myName[256];
+  sprintf(myName, "%d", getpid());
+  mkfifo(myName, 0666);
+
   *to_server = getpid();
   open(WKP, O_WRONLY);
   write(WKP, to_server, sizeof(*to_server));
