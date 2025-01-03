@@ -15,6 +15,10 @@ int server_setup() {
     printf("Opening named pipe does not work.\n");
     exit(1);
   }
+  char line_buff[256];
+  int namedPipe = open("./piper", O_WRONLY);
+  read( namedPipe, line_buff, 255 );
+
   int from_client = 0;
   return from_client;
 }
