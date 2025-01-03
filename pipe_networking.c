@@ -16,7 +16,7 @@ int server_setup() {
     exit(1);
   }
   char line_buff[256];
-  int namedPipe = open("./piper", O_WRONLY);
+  int namedPipe = open(WKP, O_RDONLY);
   read( namedPipe, line_buff, 255 );
 
   int from_client = 0;
