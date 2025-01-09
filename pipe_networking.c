@@ -36,7 +36,17 @@ int server_setup() {
   returns the file descriptor for the upstream pipe (see server setup).
   =========================*/
 int server_handshake(int *to_client) {
-  int from_client;
+  printf("SERVER HANDSHAKE HERE\n");
+  int from_client = server_setup();
+  *to_client = server_connect(from_client);
+  int randNum = getRand();
+  write(*to_client, &randNum, sizeof(int));
+  printf("Sent random number %d to client\n", randNum);
+
+  int getBack;
+  read(from_client, &getBack, sizeof(int));
+  printf("Client sent back %d\n", getBack);
+
   return from_client;
 }
 
