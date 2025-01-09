@@ -11,12 +11,12 @@
   =========================*/
 int server_setup() {
   mkfifo(WKP, 0666);
-  if(open(WKP, O_RDWR) == -1){
+  if(open(WKP, O_RDONLY) == -1){
     printf("Opening named pipe does not work.\n");
     exit(1);
   }
   // char line_buff[256];
-  int namedPipe = open(WKP, O_RDONLY, 0666);
+  int from_client = open(WKP, O_RDONLY, 0666);
   printf("Named pipe open.\n");
   // read( namedPipe, line_buff, 255 );
 
@@ -66,7 +66,10 @@ int client_handshake(int *to_server) {
   mkfifo(myName, 0666);
   printf("Client makes pipe with pid name.\n");
 
+  printf("PRE\n");
   *to_server = open(WKP, O_WRONLY, 0666);
+  printf("POST\n");
+  printf("WKP connection formed\n");
   write(*to_server, myName, strlen(myName));
 
   int from_server = open(myName, O_RDONLY, 0666);
@@ -93,6 +96,10 @@ int client_handshake(int *to_server) {
   =========================*/
 int server_connect(int from_client) {
   int to_client  = 0;
+  char readName[BUFFER_SIZE];
+  read(from_client, readName, sizeof(readName));
+  printf("Server got \"%s\" as the fifo name from client\n", readName);
+  to_client = open(readName, O_WRONLY, 0666);
   return to_client;
 }
 
