@@ -15,11 +15,14 @@ int server_setup() {
     printf("Opening named pipe does not work.\n");
     exit(1);
   }
-  char line_buff[256];
-  int namedPipe = open(WKP, O_RDONLY);
-  read( namedPipe, line_buff, 255 );
+  // char line_buff[256];
+  int namedPipe = open(WKP, O_RDONLY, 0666);
+  printf("Named pipe open.\n");
+  // read( namedPipe, line_buff, 255 );
 
-  int from_client = 0;
+  // int from_client = 0;
+  remove(WKP);
+  printf("Removed name pipe\n");
   return from_client;
 }
 
@@ -51,10 +54,10 @@ int client_handshake(int *to_server) {
   char myName[256];
   sprintf(myName, "%d", getpid());
   mkfifo(myName, 0666);
+  printf("Client makes pipe with pid name.\n");
 
-  *to_server = getpid();
-  open(WKP, O_WRONLY);
-  write(WKP, to_server, sizeof(*to_server));
+  *to_server = open(WKP, O_WRONLY, 0666);
+  write(*to_server, myName, strlen(myName));
   int from_server;
   return from_server;
 }
@@ -71,4 +74,11 @@ int client_handshake(int *to_server) {
 int server_connect(int from_client) {
   int to_client  = 0;
   return to_client;
+}
+
+int getRand(){
+  int x = open("dev/random", O_RDONLY);
+  int rand;
+  read(x, &rand, sizeof(int));
+  return rand;
 }
