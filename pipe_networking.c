@@ -58,7 +58,17 @@ int client_handshake(int *to_server) {
 
   *to_server = open(WKP, O_WRONLY, 0666);
   write(*to_server, myName, strlen(myName));
-  int from_server;
+
+  int from_server = open(myName, O_RDONLY, 0666);
+  int message;
+  read(from_server, &message, sizeof(int));
+  printf("Read the number %d from parent.\n", message);
+
+  remove(myName);
+  message++;
+  write(*to_server, &message, sizeof(int));
+  printf("Sent back %d to server.\n", message);
+
   return from_server;
 }
 
