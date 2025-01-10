@@ -66,9 +66,9 @@ int client_handshake(int *to_server) {
   mkfifo(myName, 0666);
   printf("Client makes pipe with pid name.\n");
 
-  printf("PRE\n");
+  printf("PRE opeing WKP\n");
   *to_server = open(WKP, O_WRONLY, 0666);
-  printf("POST\n");
+  printf("POST opening WKP\n");
   printf("WKP connection formed\n");
   write(*to_server, myName, strlen(myName));
 
