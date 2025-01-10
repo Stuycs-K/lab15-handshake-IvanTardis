@@ -42,6 +42,8 @@ int main() {
 static void sighandler(int signo){
   if ( signo == SIGINT ){
     printf("Exiting due to SIGINT\n");
+    close(from_client);
+    close(to_client);
     exit(0);
   }
   if ( signo == SIGPIPE ){
