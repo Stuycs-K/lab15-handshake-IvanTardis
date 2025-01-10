@@ -36,4 +36,6 @@ int getRand();
 // int multi_server_setup();
 // int multi_server_connect(int from_client, struct message m);
 
+static void sighandler();
+
 #endif
