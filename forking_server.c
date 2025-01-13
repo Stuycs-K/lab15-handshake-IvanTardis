@@ -31,9 +31,9 @@ int main() {
     //int rand;
     //read(x, &rand, sizeof(int));
     pid_t f = fork();
+    printf("Forking such that a child process taking over communication with client.\n");
 
     if(f == 0){
-      printf("Child process taking over communication with client");
       int randNum = abs(getRand()) % 101;
       while(1){
         //printf("Looping again, so this should be right before a new random number.\n");
