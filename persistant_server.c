@@ -30,7 +30,7 @@ int main() {
     int randNum = abs(getRand());
     while(1){
       printf("Looping again, so this should be right before a new random number.\n");
-      randNum = abs(getRand()) % 101;
+      randNum = abs(getRand());
       printf("Right after random number, and it is... %d\n", randNum);
       if(write(to_client, &randNum, sizeof(int)) == -1){
         printf("Error writing to client\n");

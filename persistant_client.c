@@ -27,14 +27,21 @@ int main() {
 
   while(1){
     int reader;
-    read(from_server, &reader, sizeof(int));
+    int numRead = read(from_server, &reader, sizeof(int));
     if(reader == -1){
       printf("Can't read rand num from server, so it must have closed, so now I am closing too.\n");
       close(to_server);
       close(from_server);
       exit(0);
     }
-    printf("Client reads random number %d from server.", reader);
+    if(numRead < 1){
+      printf("Didn't read rand num from server, so it must have closed, so now I am closing too.\n");
+      close(to_server);
+      close(from_server);
+      exit(0);
+    }
+    printf("Client reads random number %d from server.\n", reader);
+    // fflush(stdout);
   }
 }
 

@@ -10,6 +10,7 @@ persistant_server.o: persistant_server.c pipe_networking.h
 pipe_networking.o: pipe_networking.c pipe_networking.h
 	gcc -c pipe_networking.c
 clean:
+	rm -f mario
 	rm -f *.o
 	rm -f *~
 	rm -rf client
