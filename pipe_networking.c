@@ -104,7 +104,7 @@ int server_connect(int from_client) {
 }
 
 int getRand(){
-  int x = open("dev/random", O_RDONLY);
+  int x = open("dev/urandom", O_RDONLY);
   int rand;
   read(x, &rand, sizeof(int));
   return rand;

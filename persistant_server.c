@@ -27,14 +27,19 @@ int main() {
   while(1){
     from_client = server_handshake( &to_client );
     printf("Connected with a client!\n");
-    int randNum = abs(getRand()) % 101;
-    while(write(to_client, &randNum, sizeof(int)) != -1){
+    int randNum = abs(getRand());
+    while(1){
+      printf("Looping again, so this should be right before a new random number.\n");
       randNum = abs(getRand()) % 101;
-      printf("Wrote to client\n");
+      printf("Right after random number, and it is... %d\n", randNum);
+      if(write(to_client, &randNum, sizeof(int)) == -1){
+        printf("Error writing to client\n");
+        close(to_client);
+        break;
+      }
+      printf("Wrote %d to client\n", randNum);
       sleep(1);
     }
-    close(from_client);
-    close(to_client);
   }
 }
 
@@ -47,9 +52,8 @@ static void sighandler(int signo){
     exit(0);
   }
   if ( signo == SIGPIPE ){
-    printf("Exiting due to SIGPIPE\n");
+    printf("Caught a SIGPIPE so a client disconnected\n");
     close(from_client);
     close(to_client);
-    exit(0);
   }
 }
