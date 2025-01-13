@@ -27,10 +27,14 @@ int main() {
   while(1){
     from_client = server_handshake( &to_client );
     printf("Connected with a client!\n");
+    //int x = open("/dev/random", O_RDONLY, 0300);
+    //int rand;
+    //read(x, &rand, sizeof(int));
     int randNum = abs(getRand());
     while(1){
       printf("Looping again, so this should be right before a new random number.\n");
       randNum = abs(getRand());
+      //read(x, &rand, sizeof(int));
       printf("Right after random number, and it is... %d\n", randNum);
       if(write(to_client, &randNum, sizeof(int)) == -1){
         printf("Error writing to client\n");
