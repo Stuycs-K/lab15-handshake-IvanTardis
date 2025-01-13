@@ -30,19 +30,24 @@ int main() {
     //int x = open("/dev/random", O_RDONLY, 0300);
     //int rand;
     //read(x, &rand, sizeof(int));
-    int randNum = abs(getRand()) % 101;
-    while(1){
-      //printf("Looping again, so this should be right before a new random number.\n");
-      randNum = abs(getRand()) % 101;
-      //read(x, &rand, sizeof(int));
-      //printf("Right after random number, and it is... %d\n", randNum);
-      if(write(to_client, &randNum, sizeof(int)) == -1){
-        printf("Error writing to client\n");
-        close(to_client);
-        break;
+    pid_t f = fork();
+
+    if(f == 0){
+      printf("Child process taking over communication with client");
+      int randNum = abs(getRand()) % 101;
+      while(1){
+        //printf("Looping again, so this should be right before a new random number.\n");
+        randNum = abs(getRand()) % 101;
+        //read(x, &rand, sizeof(int));
+        //printf("Right after random number, and it is... %d\n", randNum);
+        if(write(to_client, &randNum, sizeof(int)) == -1){
+          printf("Error writing to client\n");
+          close(to_client);
+          break;
+        }
+        //printf("Wrote %d to client\n", randNum);
+        sleep(1);
       }
-      //printf("Wrote %d to client\n", randNum);
-      sleep(1);
     }
   }
 }
